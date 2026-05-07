@@ -17,4 +17,5 @@ FROM ${BUILD_FROM}
 COPY --from=jq-downloader /usr/local/bin/jq /usr/local/bin/jq
 COPY --chmod=755 run.sh /run.sh
 
+USER root
 CMD ["/run.sh"]
