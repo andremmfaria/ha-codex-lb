@@ -1,0 +1,41 @@
+---
+name: addon-autotag
+
+'on':
+  push:
+    branches:
+      - '**'
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Compute tag
+        id: tag
+        shell: bash
+        run: |
+          version="$(grep '^version:' codex-lb/config.yaml | cut -d '"' -f 2)"
+          branch="${GITHUB_REF_NAME}"
+          safe_branch="$(printf '%s' "${branch}" | tr '/' '-')"
+          if [ "${branch}" = "main" ]; then
+            tag="v${version}"
+          else
+            tag="v${version}-${safe_branch}"
+          fi
+          printf 'tag=%s\n' "${tag}" >> "$GITHUB_OUTPUT"
+
+      - name: Force-push tag
+        shell: bash
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -f "${TAG}"
+          git push origin "refs/tags/${TAG}" --force
