@@ -15,7 +15,6 @@ ports_description:
   2455/tcp: "Codex LB API + Dashboard"
   1455/tcp: "OAuth callback (server-side)"
 ingress: true
-ingress_port: 8099
 panel_icon: mdi:api
 panel_title: Codex LB
 image: "ghcr.io/andremmfaria/{arch}-addon-codex-lb"
