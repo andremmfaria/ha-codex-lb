@@ -17,4 +17,6 @@ export CODEX_LB_HOST="0.0.0.0"
 export CODEX_LB_PORT="2455"
 export CODEX_LB_OAUTH_CALLBACK_PORT="1455"
 
+nginx -c /etc/nginx/nginx.conf
+
 exec /app/scripts/docker-entrypoint.sh
