@@ -1,0 +1,6 @@
+---
+# NOTE: 'latest' may introduce breaking changes on upstream rebuild.
+# To pin: use a digest or tag from ghcr.io/soju06/codex-lb
+build_from:
+  amd64: ghcr.io/soju06/codex-lb:latest
+  aarch64: ghcr.io/soju06/codex-lb:latest

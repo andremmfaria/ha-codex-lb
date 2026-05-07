@@ -1,0 +1,483 @@
+---
+configuration:
+  encryption_key:
+    name: "Encryption key"
+    description: >-
+      Secret key for encrypting stored tokens. REQUIRED. Leave empty to
+      auto-generate (WARNING: ephemeral — data lost on restart). Generate
+      with: openssl rand -hex 32
+  database_url:
+    name: "Database URL"
+    description: >-
+      SQLAlchemy connection string for the addon database. Defaults to the
+      bundled SQLite file in /data.
+  database_pool_size:
+    name: "Database pool size"
+    description: >-
+      Maximum number of persistent database connections kept ready for
+      reuse.
+  database_max_overflow:
+    name: "Database max overflow"
+    description: >-
+      Extra temporary database connections allowed above the main pool
+      when demand spikes.
+  database_pool_timeout_seconds:
+    name: "Database pool timeout"
+    description: >-
+      How long to wait, in seconds, for a free database connection before
+      failing.
+  database_migrate_on_startup:
+    name: "Migrate on startup"
+    description: >-
+      Run database migrations automatically when the addon starts.
+  database_sqlite_pre_migrate_backup_enabled:
+    name: "SQLite pre-migrate backup"
+    description: >-
+      Create a backup of the SQLite database before applying migrations.
+  database_sqlite_pre_migrate_backup_max_files:
+    name: "SQLite backup retention"
+    description: >-
+      How many pre-migration SQLite backups to keep before older ones are
+      removed.
+  database_sqlite_startup_check_mode:
+    name: "SQLite startup check mode"
+    description: >-
+      Depth of SQLite startup validation: quick, full, or off.
+  database_alembic_auto_remap_enabled:
+    name: "Alembic auto remap"
+    description: >-
+      Automatically remap Alembic database revisions when schema history
+      shifts.
+  upstream_base_url:
+    name: "Upstream base URL"
+    description: >-
+      Base URL of the upstream OpenAI/ChatGPT API.
+  upstream_stream_transport:
+    name: "Upstream stream transport"
+    description: >-
+      Transport used for streaming upstream responses: HTTP, WebSocket, or
+      automatic selection.
+  upstream_connect_timeout_seconds:
+    name: "Upstream connect timeout"
+    description: >-
+      How long to wait, in seconds, when opening a connection to the
+      upstream service.
+  upstream_websocket_trust_env:
+    name: "Trust WebSocket env"
+    description: >-
+      Allow WebSocket clients to inherit proxy and certificate settings
+      from the environment.
+  proxy_request_budget_seconds:
+    name: "Proxy request budget"
+    description: >-
+      Maximum total time, in seconds, allowed for a proxied request.
+  compact_request_budget_seconds:
+    name: "Compact request budget"
+    description: >-
+      Time limit, in seconds, for compact or summarization requests
+      handled by the proxy.
+  stream_idle_timeout_seconds:
+    name: "Stream idle timeout"
+    description: >-
+      Idle timeout, in seconds, before a streaming response is considered
+      stalled.
+  proxy_downstream_websocket_idle_timeout_seconds:
+    name: "Downstream WebSocket idle timeout"
+    description: >-
+      Idle timeout, in seconds, for client WebSocket connections managed
+      by the proxy.
+  max_sse_event_bytes:
+    name: "Max SSE event size"
+    description: >-
+      Largest Server-Sent Event payload accepted before the event is
+      rejected.
+  upstream_response_create_max_bytes:
+    name: "Upstream response max size"
+    description: >-
+      Maximum upstream response body size, in bytes, allowed for creation
+      and buffering.
+  auth_base_url:
+    name: "Auth base URL"
+    description: >-
+      Base URL of the authentication service used for token and OAuth
+      flows.
+  oauth_client_id:
+    name: "OAuth client ID"
+    description: >-
+      OAuth client identifier used when requesting access from the auth
+      service.
+  oauth_originator:
+    name: "OAuth originator"
+    description: >-
+      Client origin string sent with OAuth requests to identify this
+      addon.
+  oauth_scope:
+    name: "OAuth scope"
+    description: >-
+      Space-separated OAuth scopes requested during authorization.
+  oauth_timeout_seconds:
+    name: "OAuth timeout"
+    description: >-
+      Timeout, in seconds, for OAuth authorization and token exchange
+      requests.
+  oauth_redirect_uri:
+    name: "OAuth redirect URI"
+    description: >-
+      Callback URL registered with the auth provider for OAuth redirects.
+  token_refresh_timeout_seconds:
+    name: "Token refresh timeout"
+    description: >-
+      How long to wait, in seconds, for a token refresh operation before
+      giving up.
+  token_refresh_interval_days:
+    name: "Token refresh interval"
+    description: >-
+      How often, in days, the addon should refresh cached access tokens.
+  usage_fetch_timeout_seconds:
+    name: "Usage fetch timeout"
+    description: >-
+      How long to wait, in seconds, when pulling account usage data from
+      upstream.
+  usage_fetch_max_retries:
+    name: "Usage fetch retries"
+    description: >-
+      Number of retry attempts allowed when usage data fetches fail.
+  usage_refresh_enabled:
+    name: "Usage refresh"
+    description: >-
+      Enable periodic refresh of usage and quota information from
+      upstream.
+  usage_refresh_interval_seconds:
+    name: "Usage refresh interval"
+    description: >-
+      How often, in seconds, usage data should be refreshed.
+  openai_cache_affinity_max_age_seconds:
+    name: "Cache affinity max age"
+    description: >-
+      Maximum age, in seconds, for cache affinity decisions tied to a user
+      or token.
+  openai_prompt_cache_key_derivation_enabled:
+    name: "Prompt cache key derivation"
+    description: >-
+      Derive prompt cache keys from request content instead of using a
+      simpler shared key.
+  http_responses_session_bridge_enabled:
+    name: "Session bridge"
+    description: >-
+      Enable sticky session routing for /responses so long-lived Codex
+      sessions stay attached to the same backend.
+  http_responses_session_bridge_idle_ttl_seconds:
+    name: "Bridge idle TTL"
+    description: >-
+      How long, in seconds, an inactive bridge session stays eligible for
+      reuse.
+  http_responses_session_bridge_codex_idle_ttl_seconds:
+    name: "Codex bridge idle TTL"
+    description: >-
+      Special idle TTL, in seconds, for Codex agent sessions routed
+      through the bridge.
+  http_responses_session_bridge_codex_prewarm_enabled:
+    name: "Codex bridge prewarm"
+    description: >-
+      Pre-create Codex bridge sessions ahead of traffic to reduce
+      first-request latency.
+  http_responses_session_bridge_max_sessions:
+    name: "Bridge max sessions"
+    description: >-
+      Maximum number of active bridge sessions tracked at once.
+  http_responses_session_bridge_queue_limit:
+    name: "Bridge queue limit"
+    description: >-
+      Maximum queued bridge requests allowed while waiting for a session
+      slot.
+  http_responses_session_bridge_gateway_safe_mode:
+    name: "Bridge gateway safe mode"
+    description: >-
+      Use conservative bridge behavior when the gateway must prioritize
+      stability over throughput.
+  http_responses_session_bridge_instance_id:
+    name: "Bridge instance ID"
+    description: >-
+      Stable identifier for this bridge instance, used for routing and
+      session ownership.
+  http_responses_session_bridge_instance_ring:
+    name: "Bridge instance ring"
+    description: >-
+      Optional ring or shard label used to group bridge instances for
+      routing.
+  http_responses_session_bridge_advertise_base_url:
+    name: "Bridge advertise base URL"
+    description: >-
+      Public base URL advertised to peers for reaching this bridge
+      instance.
+  sticky_session_cleanup_enabled:
+    name: "Sticky session cleanup"
+    description: >-
+      Remove expired sticky session records automatically.
+  sticky_session_cleanup_interval_seconds:
+    name: "Sticky session cleanup interval"
+    description: >-
+      How often, in seconds, expired sticky session records are cleaned
+      up.
+  firewall_trust_proxy_headers:
+    name: "Trust proxy headers"
+    description: >-
+      Trust X-Forwarded-For and related headers from HA ingress proxy.
+      Keep enabled when using ingress.
+  firewall_trusted_proxy_cidrs:
+    name: "Trusted proxy CIDRs"
+    description: >-
+      Comma-separated CIDR list of reverse proxies allowed to set
+      forwarded client headers.
+  dashboard_auth_mode:
+    name: "Dashboard auth mode"
+    description: >-
+      Authentication mode for the dashboard: standard (username/password),
+      trusted_header (reverse proxy user header), disabled.
+  dashboard_auth_proxy_header:
+    name: "Dashboard auth proxy header"
+    description: >-
+      HTTP header name used when dashboard authentication trusts a reverse
+      proxy user identity.
+  dashboard_bootstrap_token:
+    name: "Dashboard bootstrap token"
+    description: >-
+      One-time token to create the first admin account. Clear after first
+      login.
+  log_format:
+    name: "Log format"
+    description: >-
+      Choose structured JSON logs or human-readable text logs.
+  log_proxy_request_shape:
+    name: "Log proxy request shape"
+    description: >-
+      Record request shape metadata for proxy traffic without full
+      payloads.
+  log_proxy_request_shape_raw_cache_key:
+    name: "Log raw cache key"
+    description: >-
+      Include the raw cache key used when logging proxy request shape
+      details.
+  log_proxy_request_payload:
+    name: "Log proxy request payload"
+    description: >-
+      Log full proxy request payloads for debugging when sensitive data
+      exposure is acceptable.
+  log_proxy_service_tier_trace:
+    name: "Log service tier trace"
+    description: >-
+      Include service-tier routing details in proxy logs for debugging and
+      tracing.
+  log_upstream_request_summary:
+    name: "Log upstream request summary"
+    description: >-
+      Write concise summaries of upstream requests to the log stream.
+  log_upstream_request_payload:
+    name: "Log upstream request payload"
+    description: >-
+      Log full upstream request bodies for troubleshooting.
+  max_decompressed_body_bytes:
+    name: "Max decompressed body size"
+    description: >-
+      Largest body size, in bytes, allowed after decompression.
+  image_inline_fetch_enabled:
+    name: "Inline image fetch"
+    description: >-
+      Fetch remote images and inline them into supported requests.
+  image_inline_allowed_hosts:
+    name: "Inline image allowed hosts"
+    description: >-
+      Comma-separated allowlist of hosts permitted for inline image
+      fetching.
+  images_host_model:
+    name: "Images host model"
+    description: >-
+      Model used to inspect or route image-related host behavior.
+  images_default_model:
+    name: "Default image model"
+    description: >-
+      Default image generation model used when callers do not request a
+      specific one.
+  images_max_partial_images:
+    name: "Max partial images"
+    description: >-
+      Maximum number of partial image fragments accepted while building a
+      complete image request.
+  model_registry_enabled:
+    name: "Model registry"
+    description: >-
+      Enable periodic fetching of available models from upstream.
+  model_registry_refresh_interval_seconds:
+    name: "Model registry refresh interval"
+    description: >-
+      How often, in seconds, the model registry is refreshed.
+  model_registry_client_version:
+    name: "Model registry client version"
+    description: >-
+      Client version string sent when querying the upstream model
+      registry.
+  model_context_window_overrides:
+    name: "Model context window overrides"
+    description: >-
+      Optional override table for per-model context window sizes.
+  proxy_unauthenticated_client_cidrs:
+    name: "Unauthenticated client CIDRs"
+    description: >-
+      CIDR ranges allowed to reach proxy endpoints without authentication.
+  bulkhead_proxy_limit:
+    name: "Proxy bulkhead limit"
+    description: >-
+      Maximum concurrent proxy requests allowed before bulkhead protection
+      rejects new work.
+  bulkhead_dashboard_limit:
+    name: "Dashboard bulkhead limit"
+    description: >-
+      Maximum concurrent dashboard requests allowed before protection
+      kicks in.
+  proxy_token_refresh_limit:
+    name: "Token refresh limit"
+    description: >-
+      Maximum concurrent token refresh operations allowed through the
+      proxy.
+  proxy_upstream_websocket_connect_limit:
+    name: "Upstream WebSocket connect limit"
+    description: >-
+      Maximum concurrent upstream WebSocket connection attempts allowed.
+  proxy_response_create_limit:
+    name: "Response create limit"
+    description: >-
+      Maximum concurrent response creation requests the proxy will
+      process.
+  proxy_compact_response_create_limit:
+    name: "Compact response create limit"
+    description: >-
+      Maximum concurrent compact response creation requests allowed.
+  proxy_admission_wait_timeout_seconds:
+    name: "Admission wait timeout"
+    description: >-
+      How long, in seconds, a request may wait in admission control before
+      being denied.
+  proxy_refresh_failure_cooldown_seconds:
+    name: "Refresh failure cooldown"
+    description: >-
+      Cooldown period, in seconds, after proxy refresh failures before
+      retrying.
+  usage_refresh_auth_failure_cooldown_seconds:
+    name: "Usage auth failure cooldown"
+    description: >-
+      Cooldown period, in seconds, after usage refresh authentication
+      failures before retrying.
+  memory_warning_threshold_mb:
+    name: "Memory warning threshold"
+    description: >-
+      Memory usage, in MB, at which the addon should start warning about
+      pressure.
+  memory_reject_threshold_mb:
+    name: "Memory reject threshold"
+    description: >-
+      Memory usage, in MB, at which new work should be rejected to protect
+      stability.
+  metrics_enabled:
+    name: "Metrics"
+    description: >-
+      Expose Prometheus-style metrics for monitoring the addon.
+  metrics_port:
+    name: "Metrics port"
+    description: >-
+      TCP port used for the metrics endpoint.
+  leader_election_enabled:
+    name: "Leader election"
+    description: >-
+      Allow instances to elect a single leader for clustered coordination
+      tasks.
+  leader_election_ttl_seconds:
+    name: "Leader election TTL"
+    description: >-
+      Lease duration, in seconds, for leader election ownership.
+  circuit_breaker_enabled:
+    name: "Circuit breaker"
+    description: >-
+      Stop sending traffic to unstable upstreams after repeated failures.
+  circuit_breaker_failure_threshold:
+    name: "Circuit breaker failure threshold"
+    description: >-
+      Number of failures required before the circuit breaker opens.
+  circuit_breaker_recovery_timeout_seconds:
+    name: "Circuit breaker recovery timeout"
+    description: >-
+      How long, in seconds, the circuit breaker stays open before probing
+      recovery.
+  soft_drain_enabled:
+    name: "Soft drain"
+    description: >-
+      Gradually reduce traffic to the primary instance instead of stopping
+      abruptly.
+  deterministic_failover_enabled:
+    name: "Deterministic failover"
+    description: >-
+      Use stable failover rules so traffic shifts predictably between
+      instances.
+  drain_primary_threshold_pct:
+    name: "Primary drain threshold"
+    description: >-
+      Primary load percentage at which draining behavior begins.
+  drain_secondary_threshold_pct:
+    name: "Secondary drain threshold"
+    description: >-
+      Secondary load percentage used to intensify draining or reroute
+      traffic.
+  drain_error_window_seconds:
+    name: "Drain error window"
+    description: >-
+      Rolling window, in seconds, used to count drain-related errors.
+  drain_error_count_threshold:
+    name: "Drain error count threshold"
+    description: >-
+      Error count within the drain window required to trigger stronger
+      failover behavior.
+  probe_quiet_seconds:
+    name: "Probe quiet period"
+    description: >-
+      Quiet period, in seconds, required before health probing is
+      considered stable.
+  probe_success_streak_required:
+    name: "Probe success streak"
+    description: >-
+      Number of consecutive successful probes required before declaring
+      recovery.
+  backpressure_max_concurrent_requests:
+    name: "Backpressure max concurrent requests"
+    description: >-
+      Maximum number of in-flight requests allowed before backpressure
+      blocks new arrivals.
+  otel_enabled:
+    name: "OpenTelemetry"
+    description: >-
+      Enable OpenTelemetry tracing and metrics export.
+  otel_exporter_endpoint:
+    name: "OTel exporter endpoint"
+    description: >-
+      Destination endpoint used to export OpenTelemetry data.
+  shutdown_drain_timeout_seconds:
+    name: "Shutdown drain timeout"
+    description: >-
+      How long, in seconds, the addon waits for in-flight work to drain
+      during shutdown.
+  http_connector_limit:
+    name: "HTTP connector limit"
+    description: >-
+      Maximum total outbound HTTP connections allowed by the connector
+      pool.
+  http_connector_limit_per_host:
+    name: "HTTP connector per-host limit"
+    description: >-
+      Maximum outbound HTTP connections allowed to any single host.
+  transcription_request_budget_seconds:
+    name: "Transcription request budget"
+    description: >-
+      Maximum time, in seconds, allowed for a transcription request.
+  database_migrations_fail_fast:
+    name: "Migrations fail fast"
+    description: >-
+      Abort startup immediately when database migrations fail instead of
+      continuing in a degraded state.

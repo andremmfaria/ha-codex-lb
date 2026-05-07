@@ -1,0 +1,51 @@
+#include <tunables/global>
+
+profile hassio-addon-codex_lb flags=(attach_disconnected,mediate_deleted,complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl_certs>
+
+  /init rix,
+  /command/** rix,
+  /package/** rix,
+  /run/s6/** rix,
+  /bin/** rix,
+  /sbin/** rix,
+  /usr/bin/** rix,
+  /usr/sbin/** rix,
+
+  /usr/lib/** r,
+  /usr/local/** r,
+  /lib/** r,
+  /lib64/** r,
+  /etc/** r,
+  /app/** r,
+
+  /data/** rwk,
+  /tmp/** rwk,
+  /var/tmp/** rwk,
+  /run/** rwk,
+
+  /dev/urandom r,
+  /opt/** r,
+
+  /proc/** r,
+
+  capability setuid,
+  capability setgid,
+  capability chown,
+  capability fowner,
+  capability dac_override,
+  capability kill,
+
+  network unix stream,
+  network unix dgram,
+  network inet stream,
+  network inet6 stream,
+
+  deny @{PROC}/* w,
+  deny @{PROC}/sysrq-trigger rwklx,
+  deny @{PROC}/mem rwklx,
+  deny @{PROC}/kmem rwklx,
+  deny @{PROC}/kcore rwklx,
+}
