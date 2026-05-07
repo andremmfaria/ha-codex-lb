@@ -8,8 +8,6 @@ arch:
   - amd64
   - aarch64
 homeassistant: "2024.1"
-map:
-  - data:rw
 ports:
   2455/tcp: 2455
   1455/tcp: 1455
