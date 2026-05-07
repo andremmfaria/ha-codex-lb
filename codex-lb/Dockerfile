@@ -1,7 +1,7 @@
 ARG BUILD_FROM
-FROM ${BUILD_FROM}
 
-RUN set -eu \
+FROM alpine:3.19 AS jq-downloader
+RUN apk add --no-cache curl \
     && ARCH="$(uname -m)" \
     && case "${ARCH}" in \
          x86_64)  JQ_ARCH="amd64" ;; \
@@ -12,7 +12,9 @@ RUN set -eu \
          "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-${JQ_ARCH}" \
     && chmod +x /usr/local/bin/jq
 
-COPY run.sh /run.sh
-RUN chmod +x /run.sh
+FROM ${BUILD_FROM}
+
+COPY --from=jq-downloader /usr/local/bin/jq /usr/local/bin/jq
+COPY --chmod=755 run.sh /run.sh
 
 CMD ["/run.sh"]
